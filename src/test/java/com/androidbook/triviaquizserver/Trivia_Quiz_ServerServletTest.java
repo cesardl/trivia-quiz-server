@@ -18,10 +18,10 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link HelloAppEngine}.
+ * Unit tests for {@link Trivia_Quiz_ServerServlet}.
  */
 @RunWith(JUnit4.class)
-public class HelloAppEngineTest {
+public class Trivia_Quiz_ServerServletTest {
 
     private static final String FAKE_URL = "fake.fk/hello";
     // Set up a helper so that the ApiProxy returns a valid environment for local testing.
@@ -32,7 +32,7 @@ public class HelloAppEngineTest {
     @Mock
     private HttpServletResponse mockResponse;
     private StringWriter responseWriter;
-    private HelloAppEngine servletUnderTest;
+    private Trivia_Quiz_ServerServlet servletUnderTest;
 
     @Before
     public void setUp() throws Exception {
@@ -46,7 +46,7 @@ public class HelloAppEngineTest {
         responseWriter = new StringWriter();
         when(mockResponse.getWriter()).thenReturn(new PrintWriter(responseWriter));
 
-        servletUnderTest = new HelloAppEngine();
+        servletUnderTest = new Trivia_Quiz_ServerServlet();
     }
 
     @After
@@ -60,15 +60,8 @@ public class HelloAppEngineTest {
 
         // We expect our hello world response.
         assertThat(responseWriter.toString())
-                .named("HelloAppEngine response")
-                .contains("Hello App Engine - Standard ");
+                .named("Trivia_Quiz_ServerServlet response")
+                .contains("Hello, world");
     }
 
-    @Test
-    public void helloInfoTest() {
-        String result = HelloAppEngine.getInfo();
-        assertThat(result)
-                .named("HelloInfo.getInfo")
-                .containsMatch("^Version:\\s+.+OS:\\s+.+User:\\s");
-    }
 }

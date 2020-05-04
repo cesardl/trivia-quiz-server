@@ -8,3 +8,5 @@ target/
 # Eclipse
 .project
 .classpath
+
+datanucleus.log
