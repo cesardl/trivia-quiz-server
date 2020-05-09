@@ -92,7 +92,8 @@
             <td>
                 <form action="/receive" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="updateId" value="<%=player.getId()%>"/>
-                    <input type="file" name="avatar"/><input type="submit" class="btn btn-primary" value="Upload"/>
+                    <input type="file" class="form-control-file border" name="avatar"/>
+                    <input type="submit" class="btn btn-primary" value="Upload"/>
                 </form>
             </td>
         </tr>
