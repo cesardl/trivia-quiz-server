@@ -57,17 +57,7 @@
         <div class="col"></div>
     </div>
     <h2>All Players</h2>
-    <table class="table table-striped mt-3">
-        <thead class="thead-dark">
-        <tr>
-            <th>Id</th>
-            <th>Pic</th>
-            <th>Nickname</th>
-            <th>Email</th>
-            <th>Score</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
+    <div class="card-columns mt-3">
         <%
             PersistenceManager pm = PMF.get().getPersistenceManager();
             String query = "select from " + PlayerPersistentData.class.getName() + " order by nickname";
@@ -78,31 +68,31 @@
     } else {
         for (PlayerPersistentData player : players) {
     %>
-        <tr>
-            <td>Id: <%=player.getId()%>
-            </td>
-            <td><img src="<%= baseUrl%><%= player.getAvatarUrl() %>" alt="avatar<%=player.getId()%>"
-                     style="width: 10%"/>
-            </td>
-            <td>Nickname: <%=player.getNickname()%>
-            </td>
-            <td>Email: <%=player.getEmail() %>
-            <td>Score: <%=player.getScore()%>
-            </td>
-            <td>
+        <div class="card">
+            <img class="card-img-top" src="<%= baseUrl%><%= player.getAvatarUrl() %>"
+                 alt="avatar<%=player.getId()%>">
+            <div class="card-body">
+                <h3 class="card-title">Id: <%=player.getId()%>
+                </h3>
+                <h4 class="card-text">Nickname: <%=player.getNickname()%>
+                </h4>
+                <p class="card-text">Email: <%=player.getEmail() %>
+                </p>
+                <p class="card-text">Score: <%=player.getScore()%>
+                </p>
                 <form action="/receive" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="updateId" value="<%=player.getId()%>"/>
                     <input type="file" class="form-control-file border" name="avatar"/>
-                    <input type="submit" class="btn btn-primary" value="Upload"/>
+                    <input type="submit" class="btn btn-primary btn-sm" value="Upload"/>
                 </form>
-            </td>
-        </tr>
+            </div>
+        </div>
         <%
                 }
             }
             pm.close();
         %>
-    </table>
+    </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

@@ -51,7 +51,6 @@
         </tr>
         </thead>
         <%
-
             PersistenceManager pm = PMF.get().getPersistenceManager();
             String query = "select from " + TriviaQuizQuestions.class.getName() + " order by number desc";
             List<TriviaQuizQuestions> questions = (List<TriviaQuizQuestions>) pm.newQuery(query).execute();
@@ -69,7 +68,8 @@
             </td>
             <td><%=question.getTriviaQuestion() %>
             </td>
-            <td><img src="<%= baseUrl%><%= question.getQuestionImageUrl() %>" style="width: 10%"/></td>
+            <td><img src="<%= baseUrl%><%= question.getQuestionImageUrl() %>" style="width: 10%" alt="question"/>
+            </td>
             <td><a href="<%=delUrl %>">Delete</a> | <a href="<%=approveUrl %>">Approve</a></td>
         </tr>
         <%

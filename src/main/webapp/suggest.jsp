@@ -31,8 +31,8 @@
         </div>
         <div class="col"></div>
     </div>
-    <div class="alert alert-info">
-        <h5>Tip: If you don't know your playerId, you probably shouldn't be using this form. :)</h5>
+    <div class="alert alert-info mt-4">
+        <h6>Tip: If you don't know your playerId, you probably shouldn't be using this form. :)</h6>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

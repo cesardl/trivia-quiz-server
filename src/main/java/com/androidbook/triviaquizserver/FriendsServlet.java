@@ -36,9 +36,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FriendsServlet extends HttpServlet {
 
+    private static final Logger log = Logger.getLogger(FriendsServlet.class.getName());
     /**
      *
      */
@@ -52,7 +55,6 @@ public class FriendsServlet extends HttpServlet {
     @SuppressWarnings("unchecked")
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         boolean friendAdded = false;
         boolean friendFound = false;
         boolean friendRemoved = false;
@@ -103,9 +105,8 @@ public class FriendsServlet extends HttpServlet {
                 }
             }
 
-        } catch (NumberFormatException e) {
-            System.err.println("Failed to do friend command: " + e.getMessage());
-            e.printStackTrace();
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed to do friend command: " + e.getMessage(), e);
         } finally {
             if (pm != null) {
                 pm.close();
@@ -120,6 +121,7 @@ public class FriendsServlet extends HttpServlet {
                 "</removed><found>" +
                 friendFound +
                 "</found></friend-response>";
+
         resp.setContentType("application/xml;charset=UTF-8");
         resp.getWriter().println(response);
     }

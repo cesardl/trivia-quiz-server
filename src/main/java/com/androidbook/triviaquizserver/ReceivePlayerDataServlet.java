@@ -1,58 +1,55 @@
 /*
  * Copyright (c) 2009, Lauren Darcey and Shane Conder
  * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without modification, are 
+ *
+ * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
- * 
- * * Redistributions of source code must retain the above copyright notice, this list of 
+ *
+ * * Redistributions of source code must retain the above copyright notice, this list of
  *   conditions and the following disclaimer.
- *   
- * * Redistributions in binary form must reproduce the above copyright notice, this list 
- *   of conditions and the following disclaimer in the documentation and/or other 
+ *
+ * * Redistributions in binary form must reproduce the above copyright notice, this list
+ *   of conditions and the following disclaimer in the documentation and/or other
  *   materials provided with the distribution.
- *   
+ *
  * * Neither the name of the <ORGANIZATION> nor the names of its contributors may be used
- *   to endorse or promote products derived from this software without specific prior 
+ *   to endorse or promote products derived from this software without specific prior
  *   written permission.
- *   
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
- * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
- * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
- * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+ * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+ * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.androidbook.triviaquizserver;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
-import java.util.logging.Logger;
+import com.google.appengine.api.datastore.Blob;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUpload;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
-
-import com.google.appengine.api.datastore.Blob;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.logging.Logger;
 
 public class ReceivePlayerDataServlet extends HttpServlet {
 
-    private static final Logger log = Logger.getLogger(FileUpload.class.getName());
+    private static final Logger log = Logger.getLogger(ReceivePlayerDataServlet.class.getName());
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -67,21 +64,22 @@ public class ReceivePlayerDataServlet extends HttpServlet {
         String password = req.getParameter("password");
         String favePlace = req.getParameter("faveplace");
         String scoreStr = req.getParameter("score");
-        Long score = 0L;
+        long score = 0L;
         if (scoreStr != null && scoreStr.length() > 0) {
-            score = Long.valueOf(scoreStr);
+            score = Long.parseLong(scoreStr);
         }
         String gender = req.getParameter("gender");
-        
+
         String dobStr = req.getParameter("dob");
         Date dob = new Date();
         if (dobStr != null && dobStr.length() > 0) {
-            dob.setTime(Long.valueOf(dobStr));
+            dob.setTime(Long.parseLong(dobStr));
         }
 
         // Date birthdate = new Date( Date.parse(req.getParameter("birthdate")));
 
-        System.out.println("Nick: " + nickname + "\nemail: " + email);
+        log.info("Nick: " + nickname);
+        log.info("Email: " + email);
 
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
@@ -99,35 +97,34 @@ public class ReceivePlayerDataServlet extends HttpServlet {
                 // Right now, this means uniqueId *must* be part of the creation data
                 // As a server largely driven by the client, this will be enforced on the client side
                 Long key = Long.valueOf(updateIdStr);
-                System.out.println("Key to update: " + key);
+                log.info("Key to update: " + key);
                 PlayerPersistentData ppd = pm.getObjectById(PlayerPersistentData.class, key);
 
-                
                 // for all of these, make sure we actually got a value via the query variables
-                if (nickname != null && nickname.length() > 0 ) {
+                if (nickname != null && nickname.length() > 0) {
                     ppd.setNickname(nickname);
                 }
-                
+
                 if (email != null && email.length() > 0) {
                     ppd.setEmail(email);
                 }
-                
+
                 if (password != null && password.length() > 0) {
                     ppd.setPassword(password);
                 }
-                
+
                 if (scoreStr != null && scoreStr.length() > 0) {
                     ppd.setScore(score);
                 }
-                
+
                 if (dobStr != null && dobStr.length() > 0) {
                     ppd.setBirthdate(dob);
                 }
-                
+
                 if (favePlace != null && favePlace.length() > 0) {
                     ppd.setFavoritePlace(favePlace);
                 }
-                
+
                 if (gender != null && gender.length() > 0) {
                     ppd.setGender(gender);
                 }
