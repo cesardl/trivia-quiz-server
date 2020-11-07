@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<%@ page language="java" contentType="text/xml; charset=UTF-8"
+<%@ page contentType="application/xml;charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.util.List"%>
 <%@ page import="javax.jdo.PersistenceManager"%>
-<%@ page import="javax.jdo.Query"%>
 <%@ page import="com.androidbook.triviaquizserver.PMF"%>
 <%@ page import="com.androidbook.triviaquizserver.PlayerPersistentData"%>
 <playerinfo> <%

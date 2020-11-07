@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<%@ page language="java" contentType="text/xml; charset=utf-8"
+<%@ page contentType="application/xml; charset=UTF-8"
 	pageEncoding="utf-8"%>
 <%@ page import="java.util.List"%>
 <%@ page import="javax.jdo.PersistenceManager"%>
@@ -8,16 +8,16 @@
 <%@ page import="com.androidbook.triviaquizserver.TriviaQuizQuestions"%>
 <%@ page import="com.androidbook.triviaquizserver.PlayerPersistentData"%>
 <questions> <%
-     Long startNum = 1L;
-     Long max = 5L;
+     long startNum = 1L;
+     long max = 5L;
      String startNumStr = request.getParameter("start");
      if (startNumStr != null) {
-         startNum = Long.valueOf(startNumStr);
+         startNum = Long.parseLong(startNumStr);
      }
 
      String maxStr = request.getParameter("max");
      if (maxStr != null) {
-         max = Long.valueOf(maxStr);
+         max = Long.parseLong(maxStr);
      }
      PersistenceManager pm = PMF.get().getPersistenceManager();
 

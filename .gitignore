@@ -10,3 +10,5 @@ target/
 .classpath
 
 datanucleus.log
+*.bin
+datastore-indexes-auto.xml

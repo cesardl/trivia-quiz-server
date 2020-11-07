@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<%@ page language="java" contentType="text/xml; charset=utf-8"
+<%@ page contentType="application/xml; charset=UTF-8"
 	pageEncoding="utf-8"%>
 <%@ page import="java.util.Collection"%>
-<%@ page import="java.util.Collections"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Set"%>
 <%@ page import="java.util.TreeSet"%>
-<%@ page import="java.util.Comparator"%>
 <%@ page import="javax.jdo.PersistenceManager"%>
 <%@ page import="javax.jdo.Query"%>
 <%@ page import="com.androidbook.triviaquizserver.PMF"%>
@@ -27,19 +25,16 @@
          players = (List<PlayerPersistentData>) query.execute();
      } else {
 
-         players = new TreeSet<PlayerPersistentData>(new Comparator<PlayerPersistentData>() {
-
-             public int compare(PlayerPersistentData first, PlayerPersistentData second) {
-                 int result = 0;
-                 Long firstScore = first.getScore();
-                 Long secondScore = second.getScore();
-                 if (firstScore.equals(secondScore)) {
-                     result = first.getId().compareTo(second.getId());
-                 } else {
-                     result = secondScore.compareTo(firstScore);
-                 }
-                 return result;
+         players = new TreeSet<>((first, second) -> {
+             int result;
+             Long firstScore = first.getScore();
+             Long secondScore = second.getScore();
+             if (firstScore.equals(secondScore)) {
+                 result = first.getId().compareTo(second.getId());
+             } else {
+                 result = secondScore.compareTo(firstScore);
              }
+             return result;
          });
 
          Long key = Long.valueOf(friendsOf);
@@ -47,8 +42,8 @@
          PlayerPersistentData ppd = pm.getObjectById(PlayerPersistentData.class, key);
 
          if (ppd != null) {
-             Set<Long> friendKeys; 
-             
+             Set<Long> friendKeys;
+
              if (followers != null && followers.equals("true")) {
                  friendKeys = ppd.getFollowers();
              } else {
